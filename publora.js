@@ -13,8 +13,9 @@ const fs    = require('fs');
 const path  = require('path');
 const mime  = require('mime-types');
 
-const config  = JSON.parse(fs.readFileSync(
-  path.join(__dirname, 'config.json'), 'utf8'));
+const config_file = path.join(__dirname, 'config.json');
+
+const config  = JSON.parse(fs.readFileSync(config_file, 'utf8'));
 const API_KEY = config.API_KEY;
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -129,8 +130,8 @@ async function getConnectedAccounts() {
       console.log(`  ${acc.username}  ->  ${acc.platformId}`)
     );
 
-    const cfg = fs.existsSync('config.json') 
-      ? JSON.parse(fs.readFileSync('config.json', 'utf-8')) 
+    const cfg = fs.existsSync(config_file) 
+      ? JSON.parse(fs.readFileSync(config_file, 'utf-8')) 
       : {};
     const mergedMap = {};
     
@@ -150,7 +151,7 @@ async function getConnectedAccounts() {
     
     if (cfg.platformIds) delete cfg.platformIds;
 
-    fs.writeFileSync('config.json', JSON.stringify(cfg, null, 2));
+    fs.writeFileSync(config_file, JSON.stringify(cfg, null, 2));
   } catch (error) {
     console.error(
       'Error fetching connected accounts:', 
@@ -170,8 +171,8 @@ function resolvePlatformId(platform, username) {
   const aliasMap = { x: 'twitter' };
   const canonicalPrefix = aliasMap[pLower] || pLower;
 
-  const cfg = fs.existsSync('config.json')
-    ? JSON.parse(fs.readFileSync('config.json', 'utf-8'))
+  const cfg = fs.existsSync(config_file)
+    ? JSON.parse(fs.readFileSync(config_file, 'utf-8'))
     : {};
   const accounts = cfg.accounts || [];
 
