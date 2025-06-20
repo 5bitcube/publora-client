@@ -13,7 +13,8 @@ const fs    = require('fs');
 const path  = require('path');
 const mime  = require('mime-types');
 
-const config  = JSON.parse(fs.readFileSync('config.json', 'utf8'));
+const config  = JSON.parse(fs.readFileSync(
+  path.join(__dirname, 'config.json'), 'utf8'));
 const API_KEY = config.API_KEY;
 
 ////////////////////////////////////////////////////////////////////////////////
